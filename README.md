@@ -15,3 +15,36 @@ This is a custom ESPHome component for the GM861 barcode and QR code reader. It 
          type: git
          url: https://github.com/mudpoet/gm861_uart.git
        components: [gm861_uart]
+### Sample yaml File:
+   ```yaml
+   esphome:
+     name: gm861_example
+     platform: ESP32
+     board: esp32dev
+   
+   wifi:
+     ssid: "your_wifi_ssid"
+     password: "your_wifi_password"
+   
+   logger:
+     level: DEBUG
+   
+   uart:
+     tx_pin: GPIO1
+     rx_pin: GPIO3
+     baud_rate: 9600
+     parity: NONE
+     stop_bits: 1
+   
+   external_components:
+     - source:
+         type: git
+         url: https://github.com/mudpoet/gm861_uart.git
+       components: [gm861_uart]
+   
+   custom_component:
+     - platform: gm861_uart
+       id: gm861_uart_component
+   
+   api:
+   ota:
