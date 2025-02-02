@@ -8,13 +8,14 @@ This is a custom ESPHome component for the GM861 barcode and QR code reader. It 
 - Logs barcode and QR code data received from the device.
 
 ## Installation
-1. Add this repository to your ESPHome configuration:
+### Add this repository to your ESPHome configuration:
    ```yaml
    external_components:
      - source:
          type: git
          url: https://github.com/mudpoet/gm861_uart.git
        components: [gm861_uart]
+
 ### Sample yaml File:
    ```yaml
    esphome:
