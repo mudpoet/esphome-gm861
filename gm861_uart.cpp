@@ -13,25 +13,35 @@ class GM861UART : public Component, public UARTDevice {
   int failed_response_count = 0;
   bool heartbeat_expected = false;  // Flag to indicate if heartbeat response is expected
 
-  // This function is called when data is received
-  void on_receive(const uint8_t *data, size_t length) {
-    // Check if we are expecting a heartbeat response
-    if (heartbeat_expected) {
-      // Check if the received data matches the expected heartbeat response
-      if (length == sizeof(heartbeat_response) && memcmp(data, heartbeat_response, length) == 0) {
-        ESP_LOGD("GM861", "Received expected heartbeat response.");
-        failed_response_count = 0;  // Reset the counter on success
-      } else {
-        ESP_LOGW("GM861", "Unexpected response received for heartbeat.");
-        failed_response_count++;
-        handle_failed_responses();
-      }
-      heartbeat_expected = false;  // Reset the flag after checking
+// This function is called when data is received
+void on_receive(const uint8_t *data, size_t length) {
+  // Check if we are expecting a heartbeat response
+  if (heartbeat_expected) {
+    // Check if the received data matches the expected heartbeat response
+    if (length == sizeof(heartbeat_response) && memcmp(data, heartbeat_response, length) == 0) {
+      ESP_LOGI("GM861", "Received expected heartbeat response.");
+      failed_response_count = 0;  // Reset the counter on success
     } else {
-      // Handle normal communication (e.g., barcode data)
-      handle_normal_communication(data, length);
+      // Log unexpected response with received data
+      ESP_LOGW("GM861", "Unexpected response received for heartbeat: %s", format_data(data, length).c_str());
+      failed_response_count++;
+      handle_failed_responses();
     }
+    heartbeat_expected = false;  // Reset the flag after checking
+  } else {
+    // Handle normal communication (e.g., barcode data)
+    handle_normal_communication(data, length);
   }
+}
+
+// Helper function to format data as a hex string
+std::string format_data(const uint8_t *data, size_t length) {
+  std::string formatted_data;
+  for (size_t i = 0; i < length; i++) {
+    formatted_data += "0x" + String(data[i], HEX) + " ";  // Format each byte as hex
+  }
+  return formatted_data;
+}
 
   // Handle normal communication data
   void handle_normal_communication(const uint8_t *data, size_t length) {
