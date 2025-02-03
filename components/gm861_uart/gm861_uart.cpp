@@ -1,71 +1,47 @@
 #include "gm861_uart.h"
 
+namespace esphome {
+namespace gm861_uart {
+
 static const char *TAG = "gm861_uart";
 
 void GM861UARTComponent::setup() {
-  // Initialize UART with the specified parameters
-  ESP_LOGI(TAG, "GM861 UART component setup");
+  ESP_LOGI(TAG, "GM861 UART component initialized");
 }
 
 void GM861UARTComponent::loop() {
   uint32_t now = millis();
 
-  // Send heartbeat every 10 seconds
   if (now - last_heartbeat_time_ >= HEARTBEAT_INTERVAL) {
-    send_heartbeat();
+    send_heartbeat_();
     last_heartbeat_time_ = now;
   }
 
-  // Read data from UART
   if (available()) {
     std::vector<uint8_t> data;
     while (available()) {
       data.push_back(read());
     }
-    process_data(data);
+    process_data_(data);
   }
 }
 
-void GM861UARTComponent::send_heartbeat() {
-  // Send the heartbeat packet
+void GM861UARTComponent::send_heartbeat_() {
   write_array(HEARTBEAT_PACKET);
   ESP_LOGD(TAG, "Heartbeat sent");
 }
 
-void GM861UARTComponent::process_data(const std::vector<uint8_t> &data) {
-  // Check if the data matches the expected heartbeat response
+void GM861UARTComponent::process_data_(const std::vector<uint8_t> &data) {
   if (data == EXPECTED_RESPONSE) {
-    handle_response(data);
-  } else {
-    // Log normal data as info
-    std::string data_hex;
-    for (uint8_t byte : data) {
-      char buf[4];
-      snprintf(buf, sizeof(buf), "%02X ", byte);
-      data_hex += buf;
-    }
-    ESP_LOGI(TAG, "Data received: %s", data_hex.c_str());
-  }
-}
-
-void GM861UARTComponent::handle_response(const std::vector<uint8_t> &response) {
-  if (response == EXPECTED_RESPONSE) {
+    ESP_LOGD(TAG, "Heartbeat OK");
+    if (heartbeat_sensor_) heartbeat_sensor_->publish_state(true);
     consecutive_failures_ = 0;
-    ESP_LOGD(TAG, "Heartbeat response OK");
   } else {
-    consecutive_failures_++;
-    std::string response_hex;
-    for (uint8_t byte : response) {
-      char buf[4];
-      snprintf(buf, sizeof(buf), "%02X ", byte);
-      response_hex += buf;
-    }
-    ESP_LOGW(TAG, "Unexpected heartbeat response: %s", response_hex.c_str());
-
-    if (consecutive_failures_ >= 3) {
-      ESP_LOGE(TAG, "Heartbeat failed 3 consecutive times");
-      // Reset the counter or take further action if needed
-      consecutive_failures_ = 0;
-    }
+    std::string barcode(data.begin(), data.end());
+    ESP_LOGI(TAG, "Barcode: %s", barcode.c_str());
+    if (barcode_sensor_) barcode_sensor_->publish_state(barcode);
   }
 }
+
+}  // namespace gm861_uart
+}  // namespace esphome
