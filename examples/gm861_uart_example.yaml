@@ -1,0 +1,71 @@
+esphome:
+  name: gm861_uart_example
+  platform: ESP32  # Replace with your platform (e.g., ESP8266 if applicable)
+  board: esp32dev  # Replace with your board type
+
+# WiFi configuration
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot if WiFi fails
+  ap:
+    ssid: "GM861 Fallback Hotspot"
+    password: "fallback_password"
+
+# Enable logging
+logger:
+  level: DEBUG  # Set to DEBUG for detailed logs
+
+# Enable Home Assistant API
+api:
+  encryption: 
+    key: !secret api_key
+
+# Enable Over-The-Air (OTA) updates
+ota:
+  password: !secret ota_password
+
+# UART configuration for GM861
+uart:
+  tx_pin: GPIO1  # Replace with your TX pin
+  rx_pin: GPIO3  # Replace with your RX pin
+  baud_rate: 9600  # GM861 default baud rate
+  parity: NONE
+  stop_bits: 1
+
+# Add the GM861 UART component
+external_components:
+  - source:
+      type: git
+      url: https://github.com/mudpoet/esphome-gm861.git
+    components: [gm861_uart]
+
+# Configure the GM861 UART component
+custom_component:
+  - platform: gm861_uart
+    id: gm861_uart_component
+
+# Optional: Add a text sensor to display barcode data
+text_sensor:
+  - platform: template
+    name: "GM861 Barcode Data"
+    id: gm861_barcode_data
+    lambda: |-
+      // This lambda will be updated to process barcode data from the GM861 component
+      return "Waiting for data...";
+
+# Optional: Add a binary sensor to indicate heartbeat status
+binary_sensor:
+  - platform: template
+    name: "GM861 Heartbeat Status"
+    id: gm861_heartbeat_status
+    filters:
+      - delayed_on: 15s  # Trigger if heartbeat fails for 15 seconds
+    on_press:
+      - logger.log: "Heartbeat failed! Check GM861 connection."
+
+# Optional: Add a restart button to manually restart the device
+button:
+  - platform: restart
+    name: "Restart Device"
