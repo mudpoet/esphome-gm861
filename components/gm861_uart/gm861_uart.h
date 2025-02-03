@@ -17,12 +17,14 @@ class GM861UARTComponent : public Component, public uart::UARTDevice {
  protected:
   void send_heartbeat_();
   void process_data_(const std::vector<uint8_t> &data);
-  void handle_response_(const std::vector<uint8_t> &response);
+  void handle_heartbeat_response_(const std::vector<uint8_t> &response);
+  void handle_barcode_data_(const std::vector<uint8_t> &data);
 
   text_sensor::TextSensor *barcode_sensor_{nullptr};
   binary_sensor::BinarySensor *heartbeat_sensor_{nullptr};
   uint32_t last_heartbeat_time_{0};
   uint8_t consecutive_failures_{0};
+  bool expecting_response_{false};
   static const uint32_t HEARTBEAT_INTERVAL = 10000;
 
   const std::vector<uint8_t> HEARTBEAT_PACKET = {0x7E, 0x00, 0x0A, 0x01, 0x00, 0x00, 0x00, 0x30, 0x1A};
