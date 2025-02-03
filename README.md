@@ -16,38 +16,3 @@ Add this repository to your ESPHome configuration:
          url: https://github.com/mudpoet/gm861_uart.git
        components: [gm861_uart]
    ```
-
-## Sample
-   ```yaml
-   esphome:
-     name: gm861_example
-     platform: ESP32
-     board: esp32dev
-   
-   wifi:
-     ssid: !secret wifi_ssid
-     password: !secret wifi_password
-   
-   logger:
-     level: DEBUG
-   
-   uart:
-     tx_pin: GPIO1
-     rx_pin: GPIO3
-     baud_rate: 9600
-     parity: NONE
-     stop_bits: 1
-   
-   external_components:
-     - source:
-         type: git
-         url: https://github.com/mudpoet/gm861_uart.git
-       components: [gm861_uart]
-   
-   custom_component:
-     - platform: gm861_uart
-       id: gm861_uart_component
-   
-   api:
-   ota:
-   ```
