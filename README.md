@@ -1,11 +1,16 @@
-# GM861 UART Component for ESPHome
+# esphome-gm861
+ESPHome component to read barcodes via UART or USB with the GM861 Bar Code Reader Module by Hangzhou Grow Technology Co., Ltd.
 
-This is a custom ESPHome component for the GM861 Bar Code Reader Module. It communicates with the GM861 device over UART and includes a heartbeat mechanism to ensure the device is responsive.
+Information about the device can be found on the manufacturer's website: http://www.growscanner.com/productinfo/888747.html
+
+## Supported codes as of January 2025:
+**1D Formats:** EAN-8, UPC-A, UPC-E, ISSN, ISBN, CodaBar, Code 128, Code93, ITF-14, ITF-6, Interleaved 2 of 5, Industrial 2 of 5, Matrix 2 of 5, Code 39, Code 11, MSI-Plessey, GS1 Composite, GS1-Databar (RSS)
+
+**2D Formats:** QR Code, Data Matrix, PDF417
 
 ## Features
-- Sends a heartbeat packet every 10 seconds.
-- Logs unexpected responses and errors if the heartbeat fails 3 consecutive times.
-- Logs barcode and QR code data received from the device.
+- Logs barcode / QR code data received from the device.
+- Sends heartbeat packets to ensure the device is working properly, logging errors and disabling the device if the heartbeat fails 3 consecutive times.
 
 ## Installation
 Add this repository to your ESPHome configuration:
