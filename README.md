@@ -3,7 +3,7 @@ ESPHome component to read barcodes via UART or USB with the GM861 Bar Code Reade
 
 Information about the device can be found on the manufacturer's website: http://www.growscanner.com/productinfo/888747.html
 
-## Supported codes as of January 2025:
+## Formats Supported by the GM861
 **1D Formats:** EAN-8, UPC-A, UPC-E, ISSN, ISBN, CodaBar, Code 128, Code93, ITF-14, ITF-6, Interleaved 2 of 5, Industrial 2 of 5, Matrix 2 of 5, Code 39, Code 11, MSI-Plessey, GS1 Composite, GS1-Databar (RSS)
 
 **2D Formats:** QR Code, Data Matrix, PDF417
