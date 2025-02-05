@@ -15,6 +15,8 @@ Additional information about the GM861 can be found on the manufacturer's websit
 **2D Formats:** QR Code, Data Matrix, PDF417
 
 ## GM861 Pinout
+<table><tr><td>
+         
 | Pin | Def | Description      |
 | --- | --- | ---------------  |
 | 1   | D+  | USB data output  |
@@ -23,6 +25,12 @@ Additional information about the GM861 can be found on the manufacturer's websit
 | 4   | RXD | Serial port receiver signal (TTL Level) |
 | 5   | TXD | Serial port send signal (TTL Level) |
 | 6   | VCC | Power input 3.3V |
+
+</td><td>
+   
+![img](docs/gm861-pinout.png)
+
+</td></tr></table>
 
 
 ## YAML
