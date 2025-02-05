@@ -20,6 +20,6 @@ Add this repository to your ESPHome configuration:
    external_components:
      - source:
          type: git
-         url: https://github.com/mudpoet/gm861_uart.git
+         url: https://github.com/mudpoet/esphome-gm861.git
        components: [gm861_uart]
    ```
