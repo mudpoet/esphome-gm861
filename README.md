@@ -1,7 +1,9 @@
 # esphome-gm861
 ESPHome component to read barcodes via UART or USB with the GM861 Bar Code Reader Module by Hangzhou Grow Technology Co., Ltd.
 
-Information about the device can be found on the manufacturer's website: http://www.growscanner.com/productinfo/888747.html
+Additional information about the GM861 can be found on the manufacturer's website:
+- [Product Info](http://www.growscanner.com/productinfo/888747.html)
+- [User Guide](http://www.growbarcode.com/filedownload/126719)
 
 ## Formats supported by the GM861 Module
 **1D Formats:** EAN-8, UPC-A, UPC-E, ISSN, ISBN, CodaBar, Code 128, Code93, ITF-14, ITF-6, Interleaved 2 of 5, Industrial 2 of 5, Matrix 2 of 5, Code 39, Code 11, MSI-Plessey, GS1 Composite, GS1-Databar (RSS)
